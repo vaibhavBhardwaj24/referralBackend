@@ -5,13 +5,7 @@ import cors from "cors";
 const app = express();
 
 app.use(json());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.get("/", (req, res) => {
   res.send("Hello, Express!");
 });
