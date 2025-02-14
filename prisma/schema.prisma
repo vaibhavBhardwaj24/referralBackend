@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  name       String
+  email      String     @unique
+  referred   Referral[] @relation("Referrer")
+  referredBy Referral[] @relation("Referree")
+}
+
+model Program {
+  id            Int        @id @default(autoincrement())
+  name          String
+  referrerBonus Int
+  referreeBonus Int
+  referrals     Referral[]
+}
+
+model Referral {
+  id         Int     @id @default(autoincrement())
+  progId     Int
+  referreeId Int?
+  referrerId Int
+  program    Program @relation(fields: [progId], references: [id])
+  referree   User?   @relation("Referree", fields: [referreeId], references: [id])
+  referrer   User    @relation("Referrer", fields: [referrerId], references: [id])
+}
